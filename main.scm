@@ -21,4 +21,5 @@
 																untag-command
 																list-tags-command))
 							 (cdr (command-line))
-							 path-option)
+							 path-option
+							 version-option)

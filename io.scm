@@ -12,6 +12,8 @@
 ;;;   See the License for the specific language governing permissions and
 ;;;   limitations under the License.
 
+(define version "0.0.2")
+
 (define (directory-exists? path)
 	(and (file-exists? path)
 			 (eq? 'directory (file-info-type (file-info path)))))
@@ -58,4 +60,7 @@
 	(if (>= (current-attention) 2)
 			(println port: (current-error-port)
 							 message)))
+
+(define (print-version)
+	(println "pot - version " version))
 

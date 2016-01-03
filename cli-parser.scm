@@ -50,6 +50,11 @@
 				(init-base-path (cadr args))
 				(cont (cddr args)))))
 
+(define (version-option cont args)
+	(if (not (member? string=? (car args) '("-v" "-version")))
+			(cont args)
+			(print-version)))
+
 (define (filter-command cont args)
 	(if (not (member? string=? (car args) '("f" "filter")))
 			(cont)
