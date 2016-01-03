@@ -14,13 +14,11 @@
 
 (init-base-path (current-directory))
 
-(let ((command (parse-args (cdr (command-line))
-;													 lower-attention-option
-;													 raise-attention-option
-													 path-option)))
-	(parse-command command
-								 filter-command
-								 tag-command
-								 untag-command
-								 list-tags-command))
-
+(parse-options (lambda (command)
+								 (parse-command command
+																filter-command
+																tag-command
+																untag-command
+																list-tags-command))
+							 (cdr (command-line))
+							 path-option)
