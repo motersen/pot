@@ -70,7 +70,9 @@
 				(call-with-input-file register-path
 					(lambda (port)
 						(read-all port read-line)))
-				(list))))
+				(begin
+					(yell (string-append "Tag '" tag "' does not exist."))
+					(list)))))
 
 (define (write-files-of-tag tag files)
 	(with-output-to-file
