@@ -49,7 +49,7 @@
 		(lambda ()
 			(for-each println tags))))
 
-(define (create-tags tags)
+(define (add-tags-to-index tags)
 	"Add sorted list of tags to the index."
 	(write-tag-index (unite string<? (read-tag-index) tags)))
 
@@ -103,7 +103,7 @@
 			(if (null? tags)
 					(if (pair? new-tags)
 							;; new-tags was built in reverse order
-							(create-tags (reverse new-tags)))
+							(add-tags-to-index (reverse new-tags)))
 					(let ((new (add-files-to-tag (car tags) files)))
 						(tag (cdr tags) (if new
 																(cons (car tags) new-tags)
