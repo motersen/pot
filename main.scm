@@ -19,7 +19,8 @@
 																filter-command
 																tag-command
 																untag-command
-																list-tags-command))
+																list-tags-command
+																delete-tags-command))
 							 (cdr (command-line))
 							 path-option
 							 version-option)

@@ -53,12 +53,16 @@
 	"Add sorted list of tags to the index."
 	(write-tag-index (unite string<? (read-tag-index) tags)))
 
-(define (delete-tags tags)
-	"Remove sorted list of tags from the index."
-	(write-tag-index (differ string<? (read-tag-index) tags))
-	(map (lambda (tag)
-				 (delete-file (string-append (get-db-path) "/" tag)))
-			 tags))
+(define (remove-tags-from-index tags)
+	"Remove sorted list of tags from index"
+	(write-tag-index (differ string<? (read-tag-index) tags)))
+
+(define (delete-tag-file tag)
+	"Delete the file corresponding to tag."
+	(let ((tag-file (string-append (get-db-path) "/" tag)))
+		(if (regular-file-exists? tag-file)
+				(delete-file tag-file)
+				(yell (string-append "Tag '" tag "' does not exist.")))))
 
 (define (read-files-of-tag tag)
 	(let ((register-path (string-append (get-db-path) "/" tag)))
@@ -85,11 +89,11 @@
 	"Remove sorted list of files from tag."
 	(let ((tag-files (differ string<? (read-files-of-tag tag) files)))
 		;; return whether tag is empty now
-		;; no need to write file as it will be deleted
-		(or (null? tag-files)
-				(begin
-					(write-files-of-tag tag tag-files)
-					#f))))
+		(if (null? tag-files)
+				(or (delete-tag-file tag)
+						#t)
+				(and (write-files-of-tag tag tag-files)
+						 #f))))
 
 (define (tag tags files)
 	"Add files to each of tags."
@@ -113,8 +117,13 @@
 			(if (null? tags)
 					(if (pair? empty-tags)
 							;; empty-tags was built in reverse order
-							(delete-tags (reverse empty-tags)))
+							(remove-tags-from-index (reverse empty-tags)))
 					(let ((empty (remove-files-from-tag (car tags) files)))
 						(untag (cdr tags) (if empty
 																	(cons (car tags) empty-tags)
 																	empty-tags)))))))
+
+(define (delete-tags tags)
+	(let ((tags (merge-sort string<? tags)))
+		(remove-tags-from-index tags)
+		(map delete-tag-file tags)))

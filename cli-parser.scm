@@ -91,3 +91,12 @@
 					(shout "No Tagnames given.")
 					(untag (parse-tag-list (cadr args)) (cddr args)))))
 
+(define (delete-tags-command cont args)
+	(if (not (member? string=? (car args) '("d" "delete-tags")))
+			(cont)
+			(begin
+				(if (not (pair? (cdr args)))
+						(shout "No Tagnames given."))
+				(if (pair? (cddr args))
+						(yell "Too many arguments to delete-tags command"))
+				(delete-tags (parse-tag-list (cadr args))))))
