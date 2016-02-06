@@ -1,7 +1,7 @@
 PREFIX = /usr
 
 # should be gsc or gambitc
-GSC := gambitc
+GSC := gambitc -cc-options "-O2"
 
 sources := srfi-1.scm io.scm list-procedures.scm db.scm parser.scm \
 	cli-parser.scm main.scm
