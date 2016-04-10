@@ -32,7 +32,14 @@
 (define (request-db-dir)
 	(let ((db-path (get-db-path)))
 		(if (not (directory-exists? db-path))
-				(create-directory db-path))
+				(with-exception-catcher
+				 (lambda (x)
+					 (let ((msg "Could not create database directory"))
+						 (if (os-exception? x)
+								 (shout (string-append msg ": "
+																			 (err-code->string (os-exception-code x))))
+								 (shout msg))))
+				 (lambda () (create-directory db-path))))
 		db-path))
 
 (define (read-tag-index)
