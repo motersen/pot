@@ -18,12 +18,16 @@
 	(let ((op-chars (string->list operators)))
 		(lambda (c) (member? char=? c op-chars))))
 
-(define tag-char?
-	(let ((tag-chars (string->list (string-append "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-																								"abcdefghijklmnopqrstuvwxyz"
-																								"0123456789-"))))
-		(lambda (c)
-			(member? char=? c tag-chars))))
+(define (tag-char? char)
+	(define (char-ascii-alpha? char)
+		(let ((codepoint (char->integer char)))
+			(or (<= #x41 codepoint #x5a)			; uppercase ascii letter
+					(<= #x61 codepoint #x7a))))		; lowercase ascii letter
+	(define (char-ascii-digit? char)
+		(<= #x30 (char->integer char) #x39))
+	(or (char-ascii-alpha? char)
+			(char-ascii-digit? char)
+			(char=? #\- char)))
 
 (define (if-nth xs n)
 	(and (pair? xs)
