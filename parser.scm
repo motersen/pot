@@ -88,7 +88,7 @@
 (define (parse-tag tokens)
 	(and (pair? tokens)
 			 (string? (car tokens))
-			 (read-files-of-tag (car tokens))))
+			 (read-resources-of-tag (car tokens))))
 
 (define (parse-filter tokens)
 	(or (parse-union tokens)

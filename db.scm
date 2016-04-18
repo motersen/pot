@@ -15,7 +15,7 @@
 (define base-path #f)
 
 (define (init-base-path path)
-	"Set the relative root of tagged files. Must be an existing directory."
+	"Set the base directory for the database. Must be an existing directory."
 	(if (directory-exists? path)
 			(let ((path (path-strip-trailing-directory-separator
 									 (path-normalize path))))
@@ -71,7 +71,7 @@
 				(delete-file tag-file)
 				(yell (string-append "Tag '" tag "' does not exist.")))))
 
-(define (read-files-of-tag tag)
+(define (read-resources-of-tag tag)
 	(let ((register-path (string-append (get-db-path) "/" tag)))
 		(if (regular-file-exists? register-path)
 				(call-with-input-file register-path
@@ -81,53 +81,53 @@
 					(yell (string-append "Tag '" tag "' does not exist."))
 					(list)))))
 
-(define (write-files-of-tag tag files)
+(define (write-resources-of-tag tag resources)
 	(with-output-to-file
 			(string-append (request-db-dir) "/" tag)
 		(lambda ()
-			(for-each println files))))
+			(for-each println resources))))
 
-(define (add-files-to-tag tag files)
-	"Add sorted list of files to tag."
-	(let ((tag-files (read-files-of-tag tag)))
-		(write-files-of-tag tag (unite string<? tag-files files))
+(define (add-resources-to-tag tag resources)
+	"Add sorted list of resources to tag."
+	(let ((tag-resources (read-resources-of-tag tag)))
+		(write-resources-of-tag tag (unite string<? tag-resources resources))
 		;; return whether tag was empty before
-		(null? tag-files)))
+		(null? tag-resources)))
 
-(define (remove-files-from-tag tag files)
-	"Remove sorted list of files from tag."
-	(let ((tag-files (differ string<? (read-files-of-tag tag) files)))
+(define (remove-resources-from-tag tag resources)
+	"Remove sorted list of resources from tag."
+	(let ((tag-resources (differ string<? (read-resources-of-tag tag) resources)))
 		;; return whether tag is empty now
-		(if (null? tag-files)
+		(if (null? tag-resources)
 				(or (delete-tag-file tag)
 						#t)
-				(and (write-files-of-tag tag tag-files)
+				(and (write-resources-of-tag tag tag-resources)
 						 #f))))
 
-(define (tag tags files)
-	"Add files to each of tags."
-	(let ((files (merge-sort string<? files))
+(define (tag tags resources)
+	"Add resources to each of tags."
+	(let ((resources (merge-sort string<? resources))
 				(tags (merge-sort string<? tags)))
 		(let tag ((tags tags) (new-tags '()))
 			(if (null? tags)
 					(if (pair? new-tags)
 							;; new-tags was built in reverse order
 							(add-tags-to-index (reverse new-tags)))
-					(let ((new (add-files-to-tag (car tags) files)))
+					(let ((new (add-resources-to-tag (car tags) resources)))
 						(tag (cdr tags) (if new
 																(cons (car tags) new-tags)
 																new-tags)))))))
 
-(define (untag tags files)
-	"Remove files from each of tags."
-	(let ((files (merge-sort string<? files))
+(define (untag tags resources)
+	"Remove resources from each of tags."
+	(let ((resources (merge-sort string<? resources))
 				(tags (merge-sort string<? tags)))
 		(let untag ((tags tags) (empty-tags '()))
 			(if (null? tags)
 					(if (pair? empty-tags)
 							;; empty-tags was built in reverse order
 							(remove-tags-from-index (reverse empty-tags)))
-					(let ((empty (remove-files-from-tag (car tags) files)))
+					(let ((empty (remove-resources-from-tag (car tags) resources)))
 						(untag (cdr tags) (if empty
 																	(cons (car tags) empty-tags)
 																	empty-tags)))))))
