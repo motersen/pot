@@ -21,7 +21,7 @@
 (define tag-char?
 	(let ((tag-chars (string->list (string-append "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 																								"abcdefghijklmnopqrstuvwxyz"
-																								"123456789-"))))
+																								"0123456789-"))))
 		(lambda (c)
 			(member? char=? c tag-chars))))
 
