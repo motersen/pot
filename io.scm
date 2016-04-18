@@ -52,11 +52,16 @@
 							 "Warning: " message)))
 
 (define (tell message)
-	(if (>= (current-attention) 1)
+	(if (>= (current-attention) 0)
 			(println port: (current-error-port)
 							 message)))
 
 (define (mumble message)
+	(if (>= (current-attention) 1)
+			(println port: (current-error-port)
+							 message)))
+
+(define (whisper message)
 	(if (>= (current-attention) 2)
 			(println port: (current-error-port)
 							 message)))
