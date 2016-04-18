@@ -77,9 +77,7 @@
 				(call-with-input-file register-path
 					(lambda (port)
 						(read-all port read-line)))
-				(begin
-					(yell (string-append "Tag '" tag "' does not exist."))
-					(list)))))
+				(list))))
 
 (define (write-resources-of-tag tag resources)
 	(with-output-to-file

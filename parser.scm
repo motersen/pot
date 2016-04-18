@@ -88,7 +88,10 @@
 (define (parse-tag tokens)
 	(and (pair? tokens)
 			 (string? (car tokens))
-			 (read-resources-of-tag (car tokens))))
+			 (let ((resources (read-resources-of-tag (car tokens))))
+				 (if (null? resources)
+						 (mumble (string-append "Tag '" (car tokens) "' does not exist.")))
+				 resources)))
 
 (define (parse-filter tokens)
 	(or (parse-union tokens)
