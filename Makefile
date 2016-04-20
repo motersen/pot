@@ -1,7 +1,7 @@
 PREFIX = /usr
 
 # should be gsc or gambitc
-GSC := gambitc -cc-options "-O2"
+GSC := gambitc
 
 sources := srfi-1.scm io.scm list-procedures.scm db.scm parser.scm \
 	cli-parser.scm main.scm
@@ -21,7 +21,7 @@ install: build
 	install -Dm644 LICENSE $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE
 
 %.o: %.c
-	$(GSC) -obj $<
+	$(GSC) -cc-options "-O2" -obj $<
 
 $(linkfile): $(transpiled)
 	$(GSC) -o $(linkfile) -link $(transpiled)
