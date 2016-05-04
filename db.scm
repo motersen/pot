@@ -134,3 +134,51 @@
 	(let ((tags (merge-sort string<? tags)))
 		(remove-tags-from-index tags)
 		(map delete-tag-file tags)))
+
+(define (find-resource-in-tag-register-data v xs)
+	(define (find-beginning-of-line v i)
+		(if (= 0 i)
+				0
+				(if (= (char->integer #\newline) (u8vector-ref v (- i 1)))
+						i
+						(find-beginning-of-line v (- i 1)))))
+	(define (find-end-of-line v i)
+		(if (= (char->integer #\newline) (u8vector-ref v i))
+				i
+				(find-end-of-line v (+ i 1))))
+	(define (compare xs v i)
+		(if (null? xs)
+				(if (= (char->integer #\newline) (u8vector-ref v i))
+						0
+						-1)
+				(if (< (car xs) (u8vector-ref v i))
+						-1
+						(if (> (car xs) (u8vector-ref v i))
+								1
+								(compare (cdr xs) v (+ i 1))))))
+	(let ((left-bound 0)
+				(right-bound (- (u8vector-length v) 1)))
+		(let* ((cont (call/cc (lambda (cc) cc)))
+					 (offset (+ left-bound (floor (/ (- right-bound left-bound) 2))))
+					 (beginning-of-line (find-beginning-of-line v offset))
+					 (comparison (compare xs v beginning-of-line)))
+			(if (= comparison 0)
+					beginning-of-line
+					(begin
+						(if (= comparison -1)
+								(set! right-bound (- (find-beginning-of-line v offset) 1))
+								(set! left-bound (+ (find-end-of-line v offset) 1)))
+						(if (> left-bound right-bound)
+								#f
+								(cont cont)))))))
+
+(define (find-tags-of-resource resource)
+	(let ((unicode-resource-name (map char->integer (string->list resource))))
+		(let find ((tags (read-tag-index)))
+				(if (null? tags)
+					(list)
+					(if (find-resource-in-tag-register-data
+							 (read-entire-file (string-append (get-db-path) "/" (car tags)))
+							 unicode-resource-name)
+							(cons (car tags) (find (cdr tags)))
+							(find (cdr tags)))))))

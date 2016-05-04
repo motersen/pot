@@ -19,6 +19,7 @@
 																filter-command
 																tag-command
 																untag-command
+																reverse-search-command
 																list-tags-command
 																delete-tags-command))
 							 (cdr (command-line))

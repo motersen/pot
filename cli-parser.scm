@@ -102,3 +102,10 @@
 				(if (pair? (cddr args))
 						(yell "Too many arguments to delete-tags command"))
 				(delete-tags (parse-tag-list (cadr args))))))
+
+(define (reverse-search-command cont args)
+	(if (not (member? string=? (car args) '("r" "reverse-search")))
+			(cont)
+			(if (not (pair? (cdr args)))
+					(shout "No resource given.")
+					(for-each println (find-tags-of-resource (cadr args))))))

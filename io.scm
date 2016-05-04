@@ -22,6 +22,15 @@
 	(and (file-exists? path)
 			 (eq? 'regular (file-info-type (file-info path)))))
 
+(define (read-entire-file file)
+	(call-with-input-file file
+		(lambda (port)
+		 (let* ((length (input-port-byte-position port 0 2))
+						(data (make-u8vector length)))
+			 (input-port-byte-position port 0)
+			 (read-subu8vector data 0 length port)
+			 data))))
+
 (define raise-attention #f)
 (define lower-attention #f)
 (define current-attention #f)
