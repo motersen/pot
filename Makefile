@@ -2,26 +2,23 @@ PREFIX = /usr
 
 # should be gsc or gambitc
 GSC := gambitc
+GAMBIT_LIBDIR := $(shell gsi -e '(println (path-expand "~~lib"))')
 
 sources := srfi-1.scm io.scm list-procedures.scm db.scm parser.scm \
 	cli-parser.scm main.scm
 transpiled := $(sources:.scm=.c)
 linkfile := link.c
 cfiles := $(transpiled) $(linkfile)
-objects := $(cfiles:.c=.o)
 
-pot: $(objects)
-	$(GSC) -exe -o pot $(objects)
+pot: $(cfiles)
+	gcc -o pot -L$(GAMBIT_LIBDIR) -O2 $(cfiles) -lgambit -lm -lc -ldl -lutil
 
 clean:
-	rm -f $(objects) $(cfiles)
+	rm -f $(cfiles)
 
 install: build
 	install -D pot $(DESTDIR)$(PREFIX)/bin/pot
 	install -Dm644 LICENSE $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE
-
-%.o: %.c
-	$(GSC) -cc-options "-O2" -obj $<
 
 $(linkfile): $(transpiled)
 	$(GSC) -o $(linkfile) -link $(transpiled)
