@@ -1,5 +1,9 @@
 PREFIX = /usr
 
+CC := gcc
+CFLAGS := -O2
+LIBS := -lgambit -lm -lc -ldl -lutil
+
 # should be gsc or gambitc
 GSC := gambitc
 GAMBIT_LIBDIR := $(shell gsi -e '(println (path-expand "~~lib"))')
@@ -11,7 +15,7 @@ linkfile := link.c
 cfiles := $(transpiled) $(linkfile)
 
 pot: $(cfiles)
-	gcc -o pot -L$(GAMBIT_LIBDIR) -O2 $(cfiles) -lgambit -lm -lc -ldl -lutil
+	$(CC) -o pot -L$(GAMBIT_LIBDIR) $(CFLAGS) $(cfiles) $(LIBS)
 
 clean:
 	rm -f $(cfiles)
