@@ -1,4 +1,5 @@
 PREFIX = /usr
+MANPREFIX = $(PREFIX)/share/man
 
 CC := gcc
 CFLAGS := -O2
@@ -21,8 +22,10 @@ clean:
 	rm -f $(cfiles)
 
 install: build
+	@echo "Installing executable file to $(DESTDIR)$(PREFIX)/bin/pot"
 	install -D pot $(DESTDIR)$(PREFIX)/bin/pot
 	install -Dm644 LICENSE $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE
+	install -Dm644 pot.1 $(DESTDIR)$(MANPREFIX)/man1/pot.1
 
 $(linkfile): $(transpiled)
 	$(GSC) -o $(linkfile) -link $(transpiled)

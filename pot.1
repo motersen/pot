@@ -1,0 +1,61 @@
+.\" manpage for pot
+.TH POT 1 "February 2016" "pot 0.1.0"
+.SH NAME
+pot - organize tags
+.SH SYNOPSIS
+.nf
+\fIpot\fR [-p <path>] <command> [argument...]
+\fIpot\fR -v
+.fi
+.SH DESCRIPTION
+pot makes organizing files and other simple resources easy by providing a powerful and convenient tagging system.
+.sp
+Due to its original purpose of file management, pot is directory-based and needs every database to reside in and be referred to by its dedicated directory. Within this directory it manipulates the subdirectory \fI.pot\fR which contains the actual database. Therefore no directory can contain more than one database. Unless instructed otherwise, pot assumes the database in the current working directory.
+.SH OPTIONS
+-p, -path <path>
+    Run as if pot was started in \fI<path>\fR instead of the current directory.
+
+-v, -version
+    Display version and exit.
+.SH COMMANDS
+d, delete-tags <tag-list>
+    Remove tags from the database.
+
+f, filter <filter>
+    Print the resources which are described by \fI<filter>\fR in alphabetical
+order to standard output.
+
+lt, list-tags
+    Print all tags in alphabetical order.
+
+r, reverse-search <resource>
+    Print all tags \fI<resource>\fR belongs to.
+
+t, tag <tag-list> [resource...]
+    Add resources to each of \fI<tag-list>\fR.
+
+u, untag <tag-list> [resource...]
+    Remove resources from each of \fI<tag-list>\fR.
+.SH SPECIAL FORMS
+.SS Resources
+A Resource is a string describing an organized object. Examples for resources are files or URLs.
+.SS Tagnames
+Tagnames represent the categories using which resources can be categorized. They
+are made up of alphanumeric symbols and hyphens.
+.SS Tag-Lists
+A Tag-List is a comma-separated list of Tagnames. Space is not allowed.
+.SS Filters
+A Filter combines multiple Tagnames to describe a set of resources.
+
+In a filter, a Tagname represents the set of resources tagged with it.
+.PP
+Sets can be combined using the following operators (Sorted descending
+by precedence):
+
+    () A set can be enclosed in parantheses to prioritize its evaluation.
+
+    , - Intersection: The set of resources shared by both sets.
+
+    / - Difference: The first set without the resources contained in the second set.
+
+    ; - Union: The set of resources contained in either one or both sets.
