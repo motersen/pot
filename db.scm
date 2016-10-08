@@ -15,7 +15,7 @@
 (define base-path #f)
 
 (define (init-base-path path)
-	"Set the base directory for the database. Must be an existing directory."
+	"Set the base directory for the database."
 	(if (directory-exists? path)
 			(let ((path (path-strip-trailing-directory-separator
 									 (path-normalize path))))
@@ -33,28 +33,32 @@
 	(let ((db-path (get-db-path)))
 		(if (not (directory-exists? db-path))
 				(with-exception-catcher
-				 (lambda (x)
-					 (let ((msg "Could not create database directory"))
-						 (if (os-exception? x)
-								 (shout (string-append msg ": "
-																			 (err-code->string (os-exception-code x))))
-								 (shout msg))))
+				 (exception-catcher (string-append "Could not create database directory " db-path)
+														all-exception-catchers)
 				 (lambda () (create-directory db-path))))
 		db-path))
 
 (define (read-tag-index)
 	(let ((index-path (string-append (get-db-path) "/.index")))
 		(if (regular-file-exists? index-path)
-				(call-with-input-file index-path
-					(lambda (port)
-						(read-all port read-line)))
+				(with-exception-catcher
+				 (exception-catcher (string-append "Could not read " index-path)
+														all-exception-catchers)
+				 (lambda ()
+					 (call-with-input-file index-path
+						 (lambda (port)
+							 (read-all port read-line)))))
 				(list))))
 
 (define (write-tag-index tags)
-	(with-output-to-file
-			(string-append (request-db-dir) "/.index")
-		(lambda ()
-			(for-each println tags))))
+	(let ((index-path (string-append (request-db-dir) "/.index")))
+		(with-exception-catcher
+		 (exception-catcher (string-append "Could not write index to " index-path)
+												all-exception-catchers)
+		 (lambda ()
+			 (with-output-to-file index-path
+				 (lambda ()
+					 (for-each println tags)))))))
 
 (define (add-tags-to-index tags)
 	"Add sorted list of tags to the index."
@@ -68,7 +72,10 @@
 	"Delete the file corresponding to tag."
 	(let ((tag-file (string-append (get-db-path) "/" tag)))
 		(if (regular-file-exists? tag-file)
-				(delete-file tag-file)
+				(with-exception-catcher
+				 (exception-catcher (string-append "Could not delete file " tag-file)
+														(list os-exception-catcher))
+				 (lambda () (delete-file tag-file)))
 				(yell (string-append "Tag '" tag "' does not exist.")))))
 
 (define (read-resources-of-tag tag)

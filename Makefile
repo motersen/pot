@@ -8,8 +8,8 @@ LIBS := -lgambit -lm -lc -ldl -lutil
 GSC := gambitc
 GAMBIT_LIBDIR := $(shell gsi -e '(println (path-expand "~~lib"))')
 
-sources := srfi-1.scm io.scm list-procedures.scm db.scm parser.scm \
-	cli-parser.scm main.scm
+sources := srfi-1.scm io.scm exceptions.scm list-procedures.scm db.scm \
+	parser.scm cli-parser.scm main.scm
 transpiled := $(sources:.scm=.c)
 linkfile := link.c
 cfiles := $(transpiled) $(linkfile)
