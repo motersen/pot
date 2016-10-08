@@ -24,8 +24,10 @@ clean:
 install: build
 	@echo "Installing executable file to $(DESTDIR)$(PREFIX)/bin/pot"
 	install -D pot $(DESTDIR)$(PREFIX)/bin/pot
-	install -Dm644 LICENSE $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE
+	@echo "Installing manpage to $(DESTDIR)$(MANPREFIX)/man1/pot.1"
 	install -Dm644 pot.1 $(DESTDIR)$(MANPREFIX)/man1/pot.1
+	@echo "Storing license text in $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE"
+	install -Dm644 LICENSE $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE
 
 $(linkfile): $(transpiled)
 	$(GSC) -o $(linkfile) -link $(transpiled)
