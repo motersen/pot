@@ -1,13 +1,14 @@
 PREFIX = /usr
 MANPREFIX = $(PREFIX)/share/man
 
-CC := gcc
-CFLAGS := -O2
-LIBS := -lgambit -lm -lc -ldl -lutil
-
 # should be gsc or gambitc
 GSC := gambitc
 GAMBIT_LIBDIR := $(shell gsi -e '(println (path-expand "~~lib"))')
+GAMBIT_INCDIR := $(shell gsi -e '(println (path-expand "~~include"))')
+
+CC := musl-gcc
+CFLAGS := -static -O2 -idirafter $(GAMBIT_INCDIR)
+LIBS := -lgambit -lm -lc -ldl -lutil
 
 sources := srfi-1.scm io.scm exceptions.scm list-procedures.scm db.scm \
 	parser.scm cli-parser.scm main.scm
@@ -17,6 +18,7 @@ cfiles := $(transpiled) $(linkfile)
 
 pot: $(cfiles)
 	$(CC) -o pot -L$(GAMBIT_LIBDIR) $(CFLAGS) $(cfiles) $(LIBS)
+	strip pot
 
 clean:
 	rm -f $(cfiles)
