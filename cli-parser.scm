@@ -102,12 +102,12 @@
 (define (delete-tags-command cont args)
 	(if (not (member? string=? (car args) '("d" "delete-tags")))
 			(cont)
-			(begin
-				(if (not (pair? (cdr args)))
-						(shout "No Tag-List given."))
-				(if (pair? (cddr args))
-						(yell "Too many arguments to delete-tags command"))
-				(delete-tags (parse-tag-list (cadr args))))))
+			(delete-tags (fold (lambda (xs xt) (unite string<? xs xt)) '()
+												 (map (lambda (str)
+																(merge-sort string<? (parse-tag-list str)))
+															(if (pair? (cdr args))
+																	(cdr args)
+																	(read-all (current-input-port) read-line)))))))
 
 (define (reverse-search-command cont args)
 	(if (not (member? string=? (car args) '("r" "reverse-search")))

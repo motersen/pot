@@ -24,3 +24,8 @@
 			 (if (equal? x (car xs))
 					 xs
 					 (member? predicate x (cdr xs)))))
+
+(define (fold kons knil xs)
+	(if (not (pair? xs))
+			knil
+			(fold kons (kons (car xs) knil) (cdr xs))))

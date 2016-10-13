@@ -106,9 +106,11 @@
 			(syntax-fail tokens)))
 
 (define (parse-tag-list str)
-	(define (expected str)
-		(shout (string-append "Ill-formed tag-list: Expected "
-													str)))
+	(define (expected token)
+		(shout (string-append "Ill-formed tag-list "
+													"'" str "'"
+													": Expected "
+													token)))
 	(let parse-tag-list ((symbols (string->list str)))
 		(if (null? symbols)
 				(list)
