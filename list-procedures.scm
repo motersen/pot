@@ -55,10 +55,12 @@
 															 (cons (car xs) (car sections)))))))
 
 (define (merge-sort predicate xs)
-	(and (pair? xs)
-			 (if (null? (cdr xs))
-					 xs
-					 (let ((halves (alternating-bisect xs)))
-						 (unite predicate
-										(merge-sort predicate (car halves))
-										(merge-sort predicate (cdr halves)))))))
+	(if (not (pair? xs))
+			(list)
+			(let merge-sort ((xs xs))
+				(if (null? (cdr xs))
+						xs
+						(let ((halves (alternating-bisect xs)))
+							(unite predicate
+										 (merge-sort (car halves))
+										 (merge-sort (cdr halves))))))))
