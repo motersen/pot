@@ -21,13 +21,14 @@
 										all-exception-catchers)
  (lambda ()
 	 (parse-options (lambda (command)
-										(parse-command command
-																	 filter-command
-																	 tag-command
-																	 untag-command
-																	 reverse-search-command
-																	 list-tags-command
-																	 delete-tags-command))
+										(parse-command
+										 command
+										 filter-command
+										 tag-command
+										 untag-command
+										 reverse-search-command
+										 list-tags-command
+										 delete-tags-command))
 									(cdr (command-line))
 									path-option
 									version-option)))
