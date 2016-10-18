@@ -27,7 +27,8 @@
 		(<= #x30 (char->integer char) #x39))
 	(or (char-ascii-alpha? char)
 			(char-ascii-digit? char)
-			(char=? #\- char)))
+			(char=? #\- char)
+			(char=? #\: char)))
 
 (define (if-nth xs n)
 	(and (pair? xs)
