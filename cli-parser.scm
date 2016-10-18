@@ -40,21 +40,21 @@
 									(shout (string-append "Unknown option: -"
 																				(car rest-flags)))
 									(next-flag rest-flags rest-args))
-							((car parsers)
+							((caar parsers)
 							 (lambda (flags args)
 								 (cont (cdr parsers) flags args))
 							 rest-flags
 							 rest-args))))))
 
 (define (parse-long-option next-arg opt args parsers)
-	(let cont ((opt (list opt))
+	(let cont ((opt opt)
 						 (args args)
 						 (parsers parsers))
 		(if (null? opt)
 				(next-arg args)
 				(if (null? parsers)
-						(shout (string-append "Unknown Option: --" (car opt)))
-						((car parsers)
+						(shout (string-append "Unknown Option: --" opt))
+						((cdar parsers)
 						 (lambda (opt args)
 							 (cont opt args (cdr parsers)))
 						 opt
@@ -83,33 +83,51 @@
 																						 (cdr args)
 																						 parsers)))))))))
 
-(define (louder-option cont opts args)
-	(if (not (member? string=? (car opts) '("l" "louder")))
-			(cont opts args)
-			(begin
-				(raise-attention)
-				(cont (cdr opts) args))))
+(define-macro (make-option-parser flag long-option success)
+	`(cons
+		(lambda (cont flags args)
+			(if (not (string=? ,flag (car flags)))
+					(cont flags args)
+					(,success
+					 (lambda (args)
+						 (cont (cdr flags) args))
+					 args)))
+		(lambda (cont option args)
+			(if (not (string=? ,long-option option))
+					(cont option args)
+					(,success
+					 (lambda (args)
+						 (cont (list) args))
+					 args)))))
 
-(define (quieter-option cont opts args)
-	(if (not (member? string=? (car opts) '("q" "quieter")))
-			(cont opts args)
-			(begin
-				(lower-attention)
-				(cont (cdr opts) args))))
+(define path-option
+	(make-option-parser
+	 "p" "path"
+	 (lambda (cont args)
+		 (if (not (pair? args))
+				 (shout "No argument to --path option."))
+		 (init-base-path (car args))
+		 (cont (cdr args)))))
 
-(define (path-option cont opts args)
-	(if (not (member? string=? (car opts) '("p" "path")))
-			(cont opts args)
-			(begin
-				(if (not (pair? args))
-						(shout "No argument to --path option."))
-				(init-base-path (car args))
-				(cont (cdr opts) (cdr args)))))
+(define louder-option
+	(make-option-parser
+	 "l" "louder"
+	 (lambda (cont args)
+		 (raise-attention)
+		 (cont args))))
 
-(define (version-option cont opts args)
-	(if (not (member? string=? (car opts) '("v" "version")))
-			(cont opts args)
-			(print-version)))
+(define quieter-option
+	(make-option-parser
+	 "q" "quieter"
+	 (lambda (cont args)
+		 (lower-attention)
+		 (cont args))))
+
+(define version-option
+	(make-option-parser
+	 "v" "version"
+	 (lambda (cont args)
+		 (print-version))))
 
 (define (filter-command cont args)
 	(if (not (member? string=? (car args) '("f" "filter")))
