@@ -83,6 +83,20 @@
 																						 (cdr args)
 																						 parsers)))))))))
 
+(define (louder-option cont opts args)
+	(if (not (member? string=? (car opts) '("l" "louder")))
+			(cont opts args)
+			(begin
+				(raise-attention)
+				(cont (cdr opts) args))))
+
+(define (quieter-option cont opts args)
+	(if (not (member? string=? (car opts) '("q" "quieter")))
+			(cont opts args)
+			(begin
+				(lower-attention)
+				(cont (cdr opts) args))))
+
 (define (path-option cont opts args)
 	(if (not (member? string=? (car opts) '("p" "path")))
 			(cont opts args)

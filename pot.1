@@ -4,7 +4,7 @@
 pot - organize tags
 .SH SYNOPSIS
 .nf
-\fIpot\fR [-p <path>] <command> [argument...]
+\fIpot\fR [-l] [-p <path>] [-q] <command> [argument...]
 \fIpot\fR -v
 .fi
 .SH DESCRIPTION
@@ -12,9 +12,15 @@ pot makes organizing files and other simple resources easy by providing a powerf
 .sp
 Due to its original purpose of file management, pot is directory-based and needs every database to reside in and be referred to by its dedicated directory. Within this directory it manipulates the subdirectory \fI.pot\fR which contains the actual database. Therefore no directory can contain more than one database. Unless instructed otherwise, pot assumes the database in the current working directory.
 .SH OPTIONS
+-l, --louder
+    Be more verbose.
+.sp
 -p, --path <path>
     Run as if pot was started in \fI<path>\fR instead of the current directory.
-
+.sp
+-q, --quieter
+    Be less verbose.
+.sp
 -v, --version
     Display version and exit.
 .SH COMMANDS

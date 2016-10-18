@@ -30,5 +30,7 @@
 										 list-tags-command
 										 delete-tags-command))
 									(cdr (command-line))
+									louder-option
 									path-option
+									quieter-option
 									version-option)))
