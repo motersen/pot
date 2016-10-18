@@ -22,7 +22,7 @@ pot: $(cfiles)
 clean:
 	rm -f $(cfiles)
 
-install: build
+install: pot
 	install -D pot $(DESTDIR)$(PREFIX)/bin/pot
 	install -Dm644 pot.1 $(DESTDIR)$(MANPREFIX)/man1/pot.1
 	install -Dm644 LICENSE $(DESTDIR)$(PREFIX)/share/licenses/pot/LICENSE
@@ -33,4 +33,4 @@ $(linkfile): $(transpiled)
 %.c: %.scm
 	$(GSC) -c $<
 
-.PHONY: build clean install
+.PHONY: clean install
