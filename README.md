@@ -14,7 +14,7 @@ Examples
 ###indexing images
 
 display the 5 last modified files in sxiv and tag marked ones with
-'cute' and 'cats':
+**cute** and **cats**:
 
 ```shell
 ls -1t | head -5 | sxiv -iot | pot tag cute,cats
@@ -30,8 +30,9 @@ and advance on command:
 
 ###managing bookmarks
 
-find all resources tagged 'sed' and ('programming' or 'linux') in the
-database in ~/bookmarks, select one and load the uri in surf:
+find all resources tagged **sed** that also have the tags
+**programming** or **linux** contained in the database located in
+bookmarks, select one and load the uri in surf:
 
 ```shell
 pot --path ~/bookmarks filter "(programming;linux),sed" | dmenu -l 20 | xargs surf
@@ -66,7 +67,7 @@ Filters combine tags into sets of resources. The following operators
 ```
 () - parens ensure prioritized evaulation
 , - commas intersect two sets
-/ - slashes represent the difference of a set from another
+/ - slashes represent the difference of one set from another
 ; - semicolons unite two sets
 ```
 
