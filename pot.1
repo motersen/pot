@@ -1,5 +1,5 @@
 .\" manpage for pot
-.TH POT 1 "February 2016" "pot 0.1.0"
+.TH POT 1 "2016" "pot 0.1.0"
 .SH NAME
 pot - organize tags
 .SH SYNOPSIS
@@ -8,9 +8,9 @@ pot - organize tags
 \fIpot\fR -v
 .fi
 .SH DESCRIPTION
-pot makes organizing files and other simple resources easy by providing a powerful and convenient tagging system.
+Pot makes organizing files and other resources easy by providing a powerful and convenient tagging system.
 .sp
-Due to its original purpose of file management, pot is directory-based and needs every database to reside in and be referred to by its dedicated directory. Within this directory it manipulates the subdirectory \fI.pot\fR which contains the actual database. Therefore no directory can contain more than one database. Unless instructed otherwise, pot assumes the database in the current working directory.
+It is directory based and operates on the current working directory by default. To copy/remove a database it is therefore sufficient to manipulate the respective directory accordingly. If you need to move the database without touching other files in the directory, move the subdirectory \fI.pot\fR, which contains the database.
 .SH OPTIONS
 -l, --louder
     Be more verbose.
