@@ -1,8 +1,7 @@
 PREFIX = /usr
 MANPREFIX = $(PREFIX)/share/man
 
-# should be gsc or gambitc
-GSC := gambitc
+GSC := gsc
 GAMBIT_LIBDIR := $(shell gsi -e '(println (path-expand "~~lib"))')
 GAMBIT_INCDIR := $(shell gsi -e '(println (path-expand "~~include"))')
 

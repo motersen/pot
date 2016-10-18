@@ -80,7 +80,7 @@ Installation
 
 ####Variables
 
-- `GSC:=gambitc` Gambit-C compiler
+- `GSC:=gsc` Gambit-C compiler
 - `CC:=musl-gcc` C compiler
 
 ###Installing
