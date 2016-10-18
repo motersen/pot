@@ -16,7 +16,9 @@ Examples
 display the 5 last modified files in sxiv and tag marked ones with
 'cute' and 'cats':
 
-`ls -1t | head -5 | sxiv -iot | pot tag cute,cats`
+```shell
+ls -1t | head -5 | sxiv -iot | pot tag cute,cats
+```
 
 create a randomized rotation of wallpapers satisfying a given filter:
 
@@ -31,7 +33,9 @@ and advance on command:
 find all resources tagged 'sed' and ('programming' or 'linux') in the
 database in ~/bookmarks, select one and load the uri in surf:
 
-`pot --path ~/bookmarks filter "(programming;linux),sed" | dmenu -l 20 | xargs surf`
+```shell
+pot --path ~/bookmarks filter "(programming;linux),sed" | dmenu -l 20 | xargs surf
+```
 
 Commands
 --------
