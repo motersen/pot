@@ -74,6 +74,8 @@ Filters combine tags into sets of resources. The following operators
 Installation
 ------------
 
+[Arch User Repository](https://aur.archlinux.org/packages/pot)
+
 ###Dependencies
 
 - [Gambit-C][gambit]
