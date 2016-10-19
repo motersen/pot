@@ -12,7 +12,7 @@
 ;;;   See the License for the specific language governing permissions and
 ;;;   limitations under the License.
 
-(define version "0.2.0")
+(define version "0.2.1")
 
 (define (directory-exists? path)
 	(and (file-exists? path)
