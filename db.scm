@@ -182,10 +182,16 @@
 (define (find-tags-of-resource resource)
 	(let ((unicode-resource-name (map char->integer (string->list resource))))
 		(let find ((tags (read-tag-index)))
-				(if (null? tags)
+			(if (null? tags)
 					(list)
-					(if (find-resource-in-tag-register-data
-							 (read-entire-file (string-append (get-db-path) "/" (car tags)))
-							 unicode-resource-name)
-							(cons (car tags) (find (cdr tags)))
-							(find (cdr tags)))))))
+					(let ((data (read-entire-file
+											 (string-append (get-db-path) "/" (car tags)))))
+						(if (> (u8vector-length data) 0)
+								(if (find-resource-in-tag-register-data
+										 data
+										 unicode-resource-name)
+										(cons (car tags) (find (cdr tags)))
+										(find (cdr tags)))
+								(begin
+									(yell (string-append "Tag '" (car tags) "' is empty"))
+									(find (cdr tags)))))))))
