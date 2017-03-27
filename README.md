@@ -11,7 +11,7 @@ Pot is simple, fast and powerful.
 Examples
 --------
 
-###indexing images
+### indexing images
 
 display the 5 last modified files in sxiv and tag marked ones with
 **cute** and **cats**:
@@ -28,7 +28,7 @@ and advance on command:
 
 [potbg]
 
-###managing bookmarks
+### managing bookmarks
 
 find all resources tagged **sed** that also have the tags
 **programming** or **linux** contained in the database located in
@@ -59,7 +59,7 @@ on the command line.
 
 `pot untag maybe,other,tags [resource...]`
 
-###Filters
+### Filters
 
 Filters combine tags into sets of resources. The following operators
 (sorted by descending precedence) can be used in filters:
@@ -76,21 +76,21 @@ Installation
 
 [Arch User Repository](https://aur.archlinux.org/packages/pot)
 
-###Dependencies
+### Dependencies
 
 - [Gambit-C][gambit]
 - [musl-libc][musl] (default)
 
-###Building
+### Building
 
 `make`
 
-####Variables
+#### Variables
 
 - `GSC:=gsc` Gambit-C compiler
 - `CC:=musl-gcc` C compiler
 
-###Installing
+### Installing
 
 `make install`
 
