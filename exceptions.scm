@@ -17,7 +17,10 @@
 	(lambda (x)
 		(let ((cont (call/cc (lambda (cc) (cc cc)))))
 			(if (null? handlers)
-					(shout msg)
+					(begin
+						(if (> (current-attention) 0)
+								(display-exception x))
+						(shout msg))
 					(let ((h (car handlers)))
 						(set! handlers (cdr handlers))
 						(h (lambda () (cont cont)) x msg))))))
