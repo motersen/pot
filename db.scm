@@ -96,13 +96,13 @@
 	"Add sorted list of resources to tag."
 	(let ((tag-resources (read-resources-of-tag tag)))
 		(write-resources-of-tag tag (unite string<? tag-resources resources))
-		;; return whether tag was empty before
+		;; express whether tag was empty before
 		(null? tag-resources)))
 
 (define (remove-resources-from-tag tag resources)
 	"Remove sorted list of resources from tag."
 	(let ((tag-resources (differ string<? (read-resources-of-tag tag) resources)))
-		;; return whether tag is empty now
+		;; express whether tag is empty now
 		(if (null? tag-resources)
 				(or (delete-tag-file tag)
 						#t)

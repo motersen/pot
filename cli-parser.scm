@@ -13,7 +13,7 @@
 ;;;   limitations under the License.
 
 ;; Each element of parsers must be a function of one argument which is
-;; the list of arguments to parse. The parser should return the list of
+;; the list of arguments to parse. The parser should express the list of
 ;; remaining arguments
 
 (define (parse-command args . parsers)
@@ -61,7 +61,7 @@
 						 args)))))
 
 (define (parse-options parse-command args . parsers)
-	"Parse recognized options at front of args and return remaining arguments"
+	"Parse recognized options at front of args and express remaining arguments"
 	(let parse-options ((args args))
 		(if (not (pair? args))
 				(parse-command (list))
