@@ -1,6 +1,8 @@
 * TODO write specification in Texinfo
 * TODO implement placeholder to refer to all resources within filters
 * TODO rework database system
+** TODO Implement export and import capabilites
+To transition between database architectures without keeping legacy code
 ** TODO store everything in one file
 - uses diskspace more efficiently
 - enables for more efficient compression
