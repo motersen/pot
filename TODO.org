@@ -1,0 +1,12 @@
+* TODO write specification in Texinfo
+* TODO implement placeholder to refer to all resources within filters
+* TODO rework database system
+** TODO store everything in one file
+- uses diskspace more efficiently
+- enables for more efficient compression
+** TODO store number of tagged resources in tag-header
+** TODO integrate compression (miniLZO)
+* TODO display number of tagged resources in front of name in `list-tags`
+* TODO implement tag suggestion command
+- suggest tags based on resources sharing already assigned tags
+- otherwise scan resource for possible tags
