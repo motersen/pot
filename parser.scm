@@ -44,14 +44,14 @@
 				(let ((c (car s)))
 					(cond
 					 ((tag-char? c)
-						(let ((tag-rest (collect-tag s)))
-							(tokenize (cdr tag-rest) (append tokens (list (car tag-rest))))))
+						(let ((tag.rest (collect-tag s)))
+							(tokenize (cdr tag.rest) (append tokens (list (car tag.rest))))))
 					 ((op? c)
 						(tokenize (cdr s)
 											(append tokens (list (list->string (list c))))))
 					 ((char=? #\( c)
-						(let ((rest (tokenize (cdr s) '())))
-							(tokenize (cdr rest) (append tokens (list (car rest))))))
+						(let ((group.rest (tokenize (cdr s) (list))))
+							(tokenize (cdr group.rest) (append tokens (list (car group.rest))))))
 					 ((char=? #\) c)
 						(cons tokens (cdr s)))
 					 (#t
