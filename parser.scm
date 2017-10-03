@@ -86,8 +86,11 @@
 (define parse-intersection (parse-combination intersect ","))
 
 (define (parse-parens tokens)
-	(and (pair? tokens) (pair? (car tokens))
-			 (parse-filter (car tokens))))
+	(and (pair? tokens)
+			 (if (null? (car tokens))
+					 (list)
+					 (and (pair? (car tokens))
+								(parse-filter (car tokens))))))
 
 (define (parse-tag tokens)
 	(and (pair? tokens)
