@@ -40,18 +40,17 @@
 	(let tokenize ((s (string->list s))
 								 (tokens (list)))
 		(if (null? s)
-				tokens
+				(reverse tokens)
 				(let ((c (car s)))
 					(cond
 					 ((tag-char? c)
 						(let ((tag.rest (collect-tag s)))
-							(tokenize (cdr tag.rest) (append tokens (list (car tag.rest))))))
+							(tokenize (cdr tag.rest) (cons (car tag.rest) tokens))))
 					 ((op? c)
-						(tokenize (cdr s)
-											(append tokens (list (list->string (list c))))))
+						(tokenize (cdr s) (cons (list->string (list c)) tokens)))
 					 ((char=? #\( c)
 						(let ((group.rest (tokenize (cdr s) (list))))
-							(tokenize (cdr group.rest) (append tokens (list (car group.rest))))))
+							(tokenize (cdr group.rest) (cons (car group.rest) tokens))))
 					 ((char=? #\) c)
 						(cons tokens (cdr s)))
 					 (#t
