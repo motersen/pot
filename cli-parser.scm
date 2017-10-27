@@ -138,10 +138,7 @@
 				(if (pair? (cddr args))
 						(yell "Too many arguments to filter command."))
 				(for-each println
-									(parse-filter
-									 (tokenize
-										(op-check ",;/")
-										(cadr args)))))))
+									(parse-filter-string (cadr args))))))
 
 (define (list-tags-command cont args)
 	(if (not (member? string=? (car args) '("lt" "list-tags")))

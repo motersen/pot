@@ -14,10 +14,6 @@
 
 ; requires: srfi-1
 
-(define (op-check operators)
-	(let ((op-chars (string->list operators)))
-		(lambda (c) (member? char=? c op-chars))))
-
 (define (tag-char? char)
 	(define (char-ascii-alpha? char)
 		(let ((codepoint (char->integer char)))
@@ -36,7 +32,9 @@
 					 (car xs)
 					 (if-nth (cdr xs) (- n 1)))))
 
-(define (tokenize op? s)
+(define (tokenize s)
+	(define-macro (op? c)
+		`(member? char=? ,c (string->list ",;/")))
 	(let tokenize ((s (string->list s))
 								 (tokens (list)))
 		(if (null? s)
@@ -107,6 +105,9 @@
 			(parse-tag tokens)
 			(parse-parens tokens)
 			(syntax-fail tokens)))
+
+(define (parse-filter-string str)
+	(parse-filter (tokenize str)))
 
 (define (parse-tag-list str)
 	(define (expected token)
