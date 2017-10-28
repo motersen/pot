@@ -69,7 +69,7 @@
 						 (cons (list->string (reverse tag)) rest)))))
 
 (define (syntax-fail tokens)
-	(shout #\' tokens #\' "Is not a correct sentence."))
+	(shout (string-append "'" tokens "' is not a valid set description.")))
 
 (define-macro (parse-combination combinator operator)
 	`(lambda (tokens)
