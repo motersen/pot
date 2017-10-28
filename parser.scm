@@ -34,7 +34,7 @@
 
 (define (tokenize s)
 	(define-macro (op? c)
-		`(member? char=? ,c (string->list ",;/")))
+		`(member? char=? ,c (string->list "^,;/")))
 	(let tokenize ((s (string->list s))
 								 (tokens (list)))
 		(if (null? s)
@@ -85,6 +85,14 @@
 (define parse-difference (parse-combination differ "/"))
 (define parse-intersection (parse-combination intersect ","))
 
+(define (parse-complement tokens)
+	(and (pair? tokens)
+			 (pair? (cdr tokens)) ; need two tokens
+			 (null? (cddr tokens)) ; no more
+			 (string? (cadr tokens))
+			 (string=? (cadr tokens) "^")
+			 (differ string<? (get-all-resources) (parse-filter (list (car tokens))))))
+
 (define (parse-parens tokens)
 	(and (pair? tokens)
 			 (if (null? (car tokens))
@@ -104,6 +112,7 @@
 	(or (parse-union tokens)
 			(parse-difference tokens)
 			(parse-intersection tokens)
+			(parse-complement tokens)
 			(parse-tag tokens)
 			(parse-parens tokens)
 			(syntax-fail tokens)))

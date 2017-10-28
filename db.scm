@@ -195,3 +195,18 @@
 								(begin
 									(yell (string-append "Tag '" (car tags) "' is empty"))
 									(find (cdr tags)))))))))
+
+(define get-all-resources
+	(let ((all-resources #f))
+		(lambda ()
+			(if (not (pair? all-resources))
+					(set! all-resources
+						(let find ((tags (read-tag-index))
+											 (resources (list)))
+							(if (null? tags)
+									resources
+									(find (cdr tags)
+												(unite string<?
+															 resources
+															 (read-resources-of-tag (car tags))))))))
+			all-resources)))
