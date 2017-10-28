@@ -73,11 +73,13 @@
 
 (define-macro (parse-combination combinator operator)
 	`(lambda (tokens)
-		 (let find-op ((a '()) (b tokens))
-			 (and (not (null? b))
-						(if (and (string? (car b)) (string=? (car b) ,operator))
-								(,combinator string<? (parse-filter a) (parse-filter (cdr b)))
-								(find-op (append a (list (car b))) (cdr b)))))))
+		 (and (pair? tokens)
+					(pair? (cdr tokens)) ;all of these are infix operators
+					(let find-op ((a (list (car tokens))) (b (cdr tokens)))
+						(and (not (null? b))
+								 (if (and (string? (car b)) (string=? (car b) ,operator))
+										 (,combinator string<? (parse-filter a) (parse-filter (cdr b)))
+										 (find-op (append a (list (car b))) (cdr b))))))))
 
 (define parse-union (parse-combination unite ";"))
 (define parse-difference (parse-combination differ "/"))
