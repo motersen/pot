@@ -50,7 +50,7 @@
 						(let ((group.rest (tokenize (cdr s) (list))))
 							(tokenize (cdr group.rest) (cons (car group.rest) tokens))))
 					 ((char=? #\) c)
-						(cons tokens (cdr s)))
+						(cons (reverse tokens) (cdr s)))
 					 (#t
 						(shout (string-append
 										"Not a valid symbol: '"
