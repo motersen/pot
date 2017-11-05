@@ -71,8 +71,8 @@
 (define (syntax-fail tokens)
 	(shout (string-append "'" tokens "' is not a valid set description.")))
 
-(define-macro (parse-combination combinator operator)
-	`(lambda (tokens)
+(define-macro (define-combination-parser name combinator operator)
+	`(define (,name tokens)
 		 (and (pair? tokens)
 					(pair? (cdr tokens)) ;all of these are infix operators
 					(let find-op ((a (list (car tokens))) (b (cdr tokens)))
@@ -81,9 +81,9 @@
 										 (,combinator string<? (parse-filter a) (parse-filter (cdr b)))
 										 (find-op (append a (list (car b))) (cdr b))))))))
 
-(define parse-union (parse-combination unite ";"))
-(define parse-difference (parse-combination differ "/"))
-(define parse-intersection (parse-combination intersect ","))
+(define-combination-parser parse-union unite ";")
+(define-combination-parser parse-difference differ "/")
+(define-combination-parser parse-intersection intersect ",")
 
 (define (parse-complement tokens)
 	(and (pair? tokens)
